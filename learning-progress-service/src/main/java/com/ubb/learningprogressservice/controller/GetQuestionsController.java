@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("question")
+@RequestMapping("/quiz/question")
 @RequiredArgsConstructor
 public class GetQuestionsController {
     private final LearningProgressService learningProgressService;

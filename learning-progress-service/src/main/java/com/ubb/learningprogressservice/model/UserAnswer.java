@@ -16,7 +16,7 @@ public class UserAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userAnswerId;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "question_id")
     private final Question question;
     private final int givenAnswerIndex;

@@ -1,0 +1,184 @@
+[
+  {
+    "quizAttemptId": 1,
+    "userId": 1,
+    "learningModule": {
+      "learningModuleId": 1,
+      "name": "module1",
+      "questions": [
+        {
+          "questionId": 1,
+          "questionText": "Will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 1,
+              "answerText": "yes"
+            },
+            {
+              "questionAnswerId": 2,
+              "answerText": "no"
+            },
+            {
+              "questionAnswerId": 3,
+              "answerText": "maybe"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionId": 2,
+          "questionText": "Why will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 4,
+              "answerText": "definitely"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionId": 3,
+          "questionText": "Surely it will work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 5,
+              "answerText": "with no doubt"
+            }
+          ],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    "userAnswers": [
+      {
+        "userAnswerId": 1,
+        "question": {
+          "questionId": 1,
+          "questionText": "Will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 1,
+              "answerText": "yes"
+            },
+            {
+              "questionAnswerId": 2,
+              "answerText": "no"
+            },
+            {
+              "questionAnswerId": 3,
+              "answerText": "maybe"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        "givenAnswerIndex": 0,
+        "correct": true
+      },
+      {
+        "userAnswerId": 2,
+        "question": {
+          "questionId": 2,
+          "questionText": "Why will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 4,
+              "answerText": "definitely"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        "givenAnswerIndex": 0,
+        "correct": true
+      }
+    ],
+    "score": 100,
+    "quizPassed": true
+  },
+  {
+    "quizAttemptId": 2,
+    "userId": 1,
+    "learningModule": {
+      "learningModuleId": 1,
+      "name": "module1",
+      "questions": [
+        {
+          "questionId": 1,
+          "questionText": "Will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 1,
+              "answerText": "yes"
+            },
+            {
+              "questionAnswerId": 2,
+              "answerText": "no"
+            },
+            {
+              "questionAnswerId": 3,
+              "answerText": "maybe"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionId": 2,
+          "questionText": "Why will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 4,
+              "answerText": "definitely"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionId": 3,
+          "questionText": "Surely it will work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 5,
+              "answerText": "with no doubt"
+            }
+          ],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    "userAnswers": [
+      {
+        "userAnswerId": 3,
+        "question": {
+          "questionId": 2,
+          "questionText": "Why will it work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 4,
+              "answerText": "definitely"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        "givenAnswerIndex": 1,
+        "correct": false
+      },
+      {
+        "userAnswerId": 4,
+        "question": {
+          "questionId": 3,
+          "questionText": "Surely it will work?",
+          "questionAnswers": [
+            {
+              "questionAnswerId": 5,
+              "answerText": "with no doubt"
+            }
+          ],
+          "correctAnswerIndex": 0
+        },
+        "givenAnswerIndex": 1,
+        "correct": false
+      }
+    ],
+    "score": 0,
+    "quizPassed": false
+  }
+]
