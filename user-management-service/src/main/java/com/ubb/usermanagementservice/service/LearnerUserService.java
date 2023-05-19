@@ -2,6 +2,7 @@ package com.ubb.usermanagementservice.service;
 
 import com.ubb.usermanagementservice.controller.request.LoginRequest;
 import com.ubb.usermanagementservice.controller.request.RegisterRequest;
+import com.ubb.usermanagementservice.controller.response.UserRegisteredResponse;
 import com.ubb.usermanagementservice.model.LearnerUser;
 import com.ubb.usermanagementservice.model.exception.LearnerUserEmailTakenException;
 import com.ubb.usermanagementservice.model.exception.LearnerUserIncorrectPasswordException;
@@ -19,7 +20,9 @@ public class LearnerUserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Long loginLearnerUser(final LoginRequest loginRequest) throws LearnerUserNotFoundException, LearnerUserIncorrectPasswordException {
+    private final HttpRequestsHandler httpRequestsHandler;
+
+    public UserRegisteredResponse loginLearnerUser(final LoginRequest loginRequest) throws LearnerUserNotFoundException, LearnerUserIncorrectPasswordException {
         LearnerUser existingUser = learnerUserRepository.findByEmail(loginRequest.getEmail());
         if (existingUser == null) {
             throw new LearnerUserNotFoundException("User does not exist");
@@ -29,10 +32,13 @@ public class LearnerUserService {
             throw new LearnerUserIncorrectPasswordException("Incorrect password");
         }
 
-        return existingUser.getLearnerUserId();
+        final Long learnerUserId = existingUser.getLearnerUserId();
+        final String username = existingUser.getUsername();
+        final String userProgressLevel = httpRequestsHandler.sendRequestToGetLearnerUserProgressLevel(learnerUserId);
+        return new UserRegisteredResponse(learnerUserId, username, userProgressLevel);
     }
 
-    public Long registerLearnerUser(final RegisterRequest registerRequest) throws LearnerUserEmailTakenException, LearnerUserUsernameTakenException {
+    public UserRegisteredResponse registerLearnerUser(final RegisterRequest registerRequest) throws LearnerUserEmailTakenException, LearnerUserUsernameTakenException {
         LearnerUser userWithEmail = learnerUserRepository.findByEmail(registerRequest.getEmail());
         if (userWithEmail != null) {
             throw new LearnerUserEmailTakenException("This email is already in use");
@@ -44,6 +50,9 @@ public class LearnerUserService {
         }
 
         LearnerUser newUser = new LearnerUser(registerRequest.getEmail(), passwordEncoder.encode(registerRequest.getPassword()), registerRequest.getUsername());
-        return learnerUserRepository.save(newUser).getLearnerUserId();
+        final Long learnerUserId = learnerUserRepository.save(newUser).getLearnerUserId();
+        final String username = newUser.getUsername();
+        final String userProgressLevel = httpRequestsHandler.sendRequestForNewUserProgress(learnerUserId);
+        return new UserRegisteredResponse(learnerUserId, username, userProgressLevel);
     }
 }

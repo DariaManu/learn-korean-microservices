@@ -1,13 +1,7 @@
 package com.ubb.learningprogressservice.service;
 
-import com.ubb.learningprogressservice.model.LearningModule;
-import com.ubb.learningprogressservice.model.Question;
-import com.ubb.learningprogressservice.model.QuizAttempt;
-import com.ubb.learningprogressservice.model.UserAnswer;
-import com.ubb.learningprogressservice.repository.LearningModuleRepository;
-import com.ubb.learningprogressservice.repository.QuestionRepository;
-import com.ubb.learningprogressservice.repository.QuizAttemptRepository;
-import com.ubb.learningprogressservice.repository.UserAnswerRepository;
+import com.ubb.learningprogressservice.model.*;
+import com.ubb.learningprogressservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +16,19 @@ public class LearningProgressService {
     private final QuestionRepository questionRepository;
     private final QuizAttemptRepository quizAttemptRepository;
     private final UserAnswerRepository userAnswerRepository;
+    private final UserProgressRepository userProgressRepository;
     private final Random random = new Random();
+
+    public String addUserProgressForNewLearnerUser(final Long learnerUserId) {
+        final UserProgress userProgress = new UserProgress(learnerUserId, ProgressLevel.BEGINNER);
+        userProgressRepository.save(userProgress);
+        return ProgressLevel.BEGINNER.toString();
+    }
+
+    public String getUserProgressLevel(final Long learnerUserId) {
+        final UserProgress userProgress = userProgressRepository.findByUserId(learnerUserId);
+        return userProgress.getLevel().toString();
+    }
 
     public List<Question> getRandomQuestionsForLearningModule(final String learningModuleName) {
         final List<Question> allQuestions = learningModuleRepository.findByName(learningModuleName).getQuestions();

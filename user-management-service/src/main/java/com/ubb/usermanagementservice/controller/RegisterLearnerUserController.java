@@ -1,6 +1,7 @@
 package com.ubb.usermanagementservice.controller;
 
 import com.ubb.usermanagementservice.controller.request.RegisterRequest;
+import com.ubb.usermanagementservice.controller.response.UserRegisteredResponse;
 import com.ubb.usermanagementservice.model.exception.LearnerUserEmailTakenException;
 import com.ubb.usermanagementservice.model.exception.LearnerUserUsernameTakenException;
 import com.ubb.usermanagementservice.service.LearnerUserService;
@@ -19,8 +20,8 @@ public class RegisterLearnerUserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerLearnerUser(@RequestBody RegisterRequest registerRequest) {
         try {
-            Long userId = learnerUserService.registerLearnerUser(registerRequest);
-            return ResponseEntity.ok(userId);
+            UserRegisteredResponse userRegisteredResponse = learnerUserService.registerLearnerUser(registerRequest);
+            return ResponseEntity.ok(userRegisteredResponse);
         } catch (LearnerUserEmailTakenException | LearnerUserUsernameTakenException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

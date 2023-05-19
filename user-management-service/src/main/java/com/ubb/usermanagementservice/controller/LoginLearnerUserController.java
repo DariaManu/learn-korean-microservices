@@ -1,6 +1,7 @@
 package com.ubb.usermanagementservice.controller;
 
 import com.ubb.usermanagementservice.controller.request.LoginRequest;
+import com.ubb.usermanagementservice.controller.response.UserRegisteredResponse;
 import com.ubb.usermanagementservice.model.exception.LearnerUserIncorrectPasswordException;
 import com.ubb.usermanagementservice.model.exception.LearnerUserNotFoundException;
 import com.ubb.usermanagementservice.service.LearnerUserService;
@@ -19,8 +20,8 @@ public class LoginLearnerUserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginLearnerUser(@RequestBody final LoginRequest loginRequest) {
         try {
-            final Long userId = learnerUserService.loginLearnerUser(loginRequest);
-            return ResponseEntity.ok(userId);
+            final UserRegisteredResponse userRegisteredResponse = learnerUserService.loginLearnerUser(loginRequest);
+            return ResponseEntity.ok(userRegisteredResponse);
         } catch (LearnerUserNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (LearnerUserIncorrectPasswordException exception) {
