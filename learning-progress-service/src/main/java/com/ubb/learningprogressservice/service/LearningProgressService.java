@@ -1,5 +1,6 @@
 package com.ubb.learningprogressservice.service;
 
+import com.ubb.learningprogressservice.controller.response.SubmitQuizAttemptResponse;
 import com.ubb.learningprogressservice.model.*;
 import com.ubb.learningprogressservice.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class LearningProgressService {
         return pickedQuestions;
     }
 
-    public void submitUserAnswersForQuiz(final Long userId, final String learningModuleName, final List<UserAnswer> userAnswers) {
+    public SubmitQuizAttemptResponse submitUserAnswersForQuiz(final Long userId, final String learningModuleName, final List<UserAnswer> userAnswers) {
         int numberOfCorrectAnswers = 0;
         for (UserAnswer userAnswer: userAnswers) {
             if (userAnswer.getGivenAnswerIndex() == userAnswer.getQuestion().getCorrectAnswerIndex()) {
@@ -75,6 +76,8 @@ public class LearningProgressService {
         quizAttempt.setQuizPassed(quizPassed);
 
         quizAttemptRepository.save(quizAttempt);
+
+        return new SubmitQuizAttemptResponse(quizPassed, score);
     }
 
     public List<QuizAttempt> getQuizAttemptHistoryForUserAndLearningModule(final Long userId, final String learningModuleName) {
