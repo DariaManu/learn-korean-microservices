@@ -20,12 +20,14 @@ public class LearningModule {
     @Column(name = "learning_module_id")
     private Long learningModuleId;
     private final String name;
+    @Enumerated(EnumType.STRING)
+    private final ProgressLevel requiredProgressLevel;
 
     @ElementCollection
     private final List<Question> questions;
 
     public LearningModule() {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override

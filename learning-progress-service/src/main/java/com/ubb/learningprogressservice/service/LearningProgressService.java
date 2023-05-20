@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,16 @@ public class LearningProgressService {
     public String getUserProgressLevel(final Long learnerUserId) {
         final UserProgress userProgress = userProgressRepository.findByUserId(learnerUserId);
         return userProgress.getLevel().toString();
+    }
+
+    public List<String> getLearningModuleNames() {
+        return StreamSupport.stream(learningModuleRepository.findAll().spliterator(), false)
+                .map(LearningModule::getName).toList();
+    }
+
+    public boolean checkAccessToLearningModule(final String learningModuleName, final ProgressLevel userProgressLevel) {
+        final LearningModule learningModule = learningModuleRepository.findByName(learningModuleName);
+        return userProgressLevel.isHigherThan(learningModule.getRequiredProgressLevel());
     }
 
     public List<Question> getRandomQuestionsForLearningModule(final String learningModuleName) {
