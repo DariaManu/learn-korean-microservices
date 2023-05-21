@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends CrudRepository<Post, Long>, PagingAndSortingRepository<Post, Long> {
+    public Post findByPostId(final Long postId);
 }

@@ -5,7 +5,6 @@ import com.ubb.blogservice.controller.response.PostResponseEntity;
 import com.ubb.blogservice.model.Post;
 import com.ubb.blogservice.service.BlogService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

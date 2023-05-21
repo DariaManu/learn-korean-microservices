@@ -1,17 +1,16 @@
 package com.ubb.blogservice.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @ToString
 @Entity
 @Table(name = "comment")
@@ -22,12 +21,13 @@ public class Comment {
     private Long commentId;
     @Column(columnDefinition = "text")
     private final String text;
+    private LocalDateTime datePosted;
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private final Post post;
+    private Post post;
 
     public Comment() {
-        this(null, null);
+        this(null);
     }
 
     @Override
