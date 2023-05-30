@@ -15,7 +15,6 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class LearningProgressService {
     private final LearningModuleRepository learningModuleRepository;
-    private final QuestionRepository questionRepository;
     private final QuizAttemptRepository quizAttemptRepository;
     private final UserAnswerRepository userAnswerRepository;
     private final UserProgressRepository userProgressRepository;

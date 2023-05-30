@@ -9,6 +9,7 @@ import com.ubb.blogservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class BlogService {
     }
 
     public List<PostResponseEntity> getNextPosts(final int pageNumber) {
-        Page<Post> pages = postRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE));
+        Page<Post> pages = postRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("datePosted").descending()));
         return pages.getContent().stream().map((post) -> new PostResponseEntity(
                 post.getPostId(),
                 post.getText(),
@@ -38,10 +39,15 @@ public class BlogService {
         )).toList();
     }
 
-    public Post addPost(Post post) {
+    public PostResponseEntity addPost(Post post) {
         final LocalDateTime currentTime = LocalDateTime.now();
         post.setDatePosted(currentTime);
-        return postRepository.save(post);
+        final Post savedPost = postRepository.save(post);
+        return new PostResponseEntity(
+                savedPost.getPostId(),
+                savedPost.getText(),
+                savedPost.getDatePosted().format(DATE_TIME_FORMATTER)
+        );
     }
 
     public Integer getNumberOfCommentForPost(final Long postId) {
@@ -51,7 +57,8 @@ public class BlogService {
 
     public List<CommentResponseEntity> getNextCommentsForPost(final Long postId, final int pageNumber) {
         final Post post = postRepository.findByPostId(postId);
-        List<Comment> comments = commentRepository.findNextByPost(post, PageRequest.of(pageNumber, PAGE_SIZE));
+        List<Comment> comments = commentRepository.findNextByPost(post,
+                PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("datePosted").descending()));
         return comments.stream().map((comment) -> new CommentResponseEntity(
                 comment.getCommentId(),
                 comment.getText(),

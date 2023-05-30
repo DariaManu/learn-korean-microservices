@@ -24,6 +24,7 @@ public class RegisterLearnerUserController {
             return ResponseEntity.ok(userRegisteredResponse);
         } catch (LearnerUserEmailTakenException | LearnerUserUsernameTakenException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //return ResponseEntity.badRequest().body(entity);
         }
     }
 }
