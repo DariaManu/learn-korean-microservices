@@ -1,4 +1,4 @@
-package com.ubb.learningprogressservice.messaging.event;
+package com.ubb.notificationsservice.messaging;
 
 import lombok.*;
 
