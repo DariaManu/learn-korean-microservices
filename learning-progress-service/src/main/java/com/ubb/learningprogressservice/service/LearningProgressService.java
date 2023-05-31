@@ -1,6 +1,8 @@
 package com.ubb.learningprogressservice.service;
 
 import com.ubb.learningprogressservice.controller.response.SubmitQuizAttemptResponse;
+import com.ubb.learningprogressservice.messaging.EventDispatcher;
+import com.ubb.learningprogressservice.messaging.event.UserProgressLevelChangedEvent;
 import com.ubb.learningprogressservice.model.*;
 import com.ubb.learningprogressservice.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class LearningProgressService {
     private final UserAnswerRepository userAnswerRepository;
     private final UserProgressRepository userProgressRepository;
     private final Random random = new Random();
+    private final EventDispatcher eventDispatcher;
 
     public String addUserProgressForNewLearnerUser(final Long learnerUserId) {
         final UserProgress userProgress = new UserProgress(learnerUserId, ProgressLevel.BEGINNER);
@@ -76,7 +79,36 @@ public class LearningProgressService {
 
         quizAttemptRepository.save(quizAttempt);
 
+        if(quizPassed) {
+            checkIfUserProgressLevelShouldChange(userId, learningModuleName);
+        }
+
         return new SubmitQuizAttemptResponse(quizPassed, score);
+    }
+
+    private void checkIfUserProgressLevelShouldChange(final Long userId, final String learningModuleName) {
+        final UserProgress userProgress = userProgressRepository.findByUserId(userId);
+        final LearningModule learningModule = learningModuleRepository.findByName(learningModuleName);
+        if (userProgress.getLevel().isEqual(learningModule.getRequiredProgressLevel())) {
+            final List<String> learningModuleNamesForPassedQuizAttempts = StreamSupport.stream(quizAttemptRepository.findAll().spliterator(), false)
+                    .filter(quizAttempt -> quizAttempt.getLearningModule().getRequiredProgressLevel().isEqual(userProgress.getLevel()))
+                    .filter(QuizAttempt::isQuizPassed)
+                    .map(quizAttempt -> quizAttempt.getLearningModule().getName()).toList();
+
+            final List<String> learningModulesForCurrentProgressLevel = learningModuleRepository.findAllByRequiredProgressLevel(userProgress.getLevel())
+                    .stream().map(LearningModule::getName).toList();
+
+            if (learningModuleNamesForPassedQuizAttempts.containsAll(learningModulesForCurrentProgressLevel)) {
+                if (StreamSupport.stream(learningModuleRepository.findAll().spliterator(), false)
+                        .anyMatch(learningModule1 -> learningModule1.getRequiredProgressLevel().isHigherThan(userProgress.getLevel()))) {
+                    //change the user progress level and send event
+                    final UserProgress newUserProgress = new UserProgress(userId, userProgress.getLevel().getNextProgressLevel());
+                    userProgressRepository.save(newUserProgress);
+                    System.out.println("User progress level changed" + newUserProgress);
+                    eventDispatcher.send(new UserProgressLevelChangedEvent(userId, newUserProgress.getLevel().toString()));
+                }
+            }
+        }
     }
 
     public List<QuizAttempt> getQuizAttemptHistoryForUserAndLearningModule(final Long userId, final String learningModuleName) {
