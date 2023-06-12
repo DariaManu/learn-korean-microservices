@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends CrudRepository<Comment, Long>, PagingAndSortingRepository<Comment, Long> {
+public interface CommentsRepository extends CrudRepository<Comment, Long>, PagingAndSortingRepository<Comment, Long> {
     public List<Comment> findNextByPost(final Post post, final PageRequest pageRequest);
     public List<Comment> findAllByPost(final Post post);
 }

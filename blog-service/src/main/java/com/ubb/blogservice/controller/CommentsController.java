@@ -17,7 +17,7 @@ public class CommentsController {
 
     @GetMapping("/count")
     public Integer getNumberOfCommentsForPost(@PathVariable final Long postId) {
-        return blogService.getNumberOfCommentForPost(postId);
+        return blogService.getNumberOfCommentsForPost(postId);
     }
 
     @GetMapping("/{pageNumber}")

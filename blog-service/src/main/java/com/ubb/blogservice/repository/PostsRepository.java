@@ -6,6 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends CrudRepository<Post, Long>, PagingAndSortingRepository<Post, Long> {
+public interface PostsRepository extends CrudRepository<Post, Long>, PagingAndSortingRepository<Post, Long> {
     public Post findByPostId(final Long postId);
 }

@@ -1,6 +1,5 @@
 package com.ubb.blogservice.controller;
 
-import com.ubb.blogservice.controller.response.GetNumberOfPostsResponse;
 import com.ubb.blogservice.controller.response.PostResponseEntity;
 import com.ubb.blogservice.model.Post;
 import com.ubb.blogservice.service.BlogService;
