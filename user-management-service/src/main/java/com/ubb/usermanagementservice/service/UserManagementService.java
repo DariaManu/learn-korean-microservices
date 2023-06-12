@@ -1,7 +1,7 @@
 package com.ubb.usermanagementservice.service;
 
 import com.ubb.usermanagementservice.controller.request.LoginRequest;
-import com.ubb.usermanagementservice.controller.request.RegisterRequest;
+import com.ubb.usermanagementservice.controller.request.SignUpRequest;
 import com.ubb.usermanagementservice.controller.response.UserRegisteredResponse;
 import com.ubb.usermanagementservice.model.LearnerUser;
 import com.ubb.usermanagementservice.model.exception.LearnerUserEmailTakenException;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LearnerUserService {
+public class UserManagementService {
     private final LearnerUserRepository learnerUserRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -38,18 +38,18 @@ public class LearnerUserService {
         return new UserRegisteredResponse(learnerUserId, username, userProgressLevel);
     }
 
-    public UserRegisteredResponse registerLearnerUser(final RegisterRequest registerRequest) throws LearnerUserEmailTakenException, LearnerUserUsernameTakenException {
-        LearnerUser userWithEmail = learnerUserRepository.findByEmail(registerRequest.getEmail());
+    public UserRegisteredResponse signUpLearnerUser(final SignUpRequest signUpRequest) throws LearnerUserEmailTakenException, LearnerUserUsernameTakenException {
+        LearnerUser userWithEmail = learnerUserRepository.findByEmail(signUpRequest.getEmail());
         if (userWithEmail != null) {
             throw new LearnerUserEmailTakenException("This email is already in use");
         }
 
-        LearnerUser userWithUsername = learnerUserRepository.findByUsername(registerRequest.getUsername());
+        LearnerUser userWithUsername = learnerUserRepository.findByUsername(signUpRequest.getUsername());
         if (userWithUsername != null) {
             throw new LearnerUserUsernameTakenException("This username is taken");
         }
 
-        LearnerUser newUser = new LearnerUser(registerRequest.getEmail(), passwordEncoder.encode(registerRequest.getPassword()), registerRequest.getUsername());
+        LearnerUser newUser = new LearnerUser(signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getUsername());
         final Long learnerUserId = learnerUserRepository.save(newUser).getLearnerUserId();
         final String username = newUser.getUsername();
         final String userProgressLevel = httpRequestsHandler.sendRequestForNewUserProgress(learnerUserId);

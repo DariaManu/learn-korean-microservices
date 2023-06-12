@@ -1,10 +1,10 @@
 package com.ubb.usermanagementservice.controller;
 
-import com.ubb.usermanagementservice.controller.request.RegisterRequest;
+import com.ubb.usermanagementservice.controller.request.SignUpRequest;
 import com.ubb.usermanagementservice.controller.response.UserRegisteredResponse;
 import com.ubb.usermanagementservice.model.exception.LearnerUserEmailTakenException;
 import com.ubb.usermanagementservice.model.exception.LearnerUserUsernameTakenException;
-import com.ubb.usermanagementservice.service.LearnerUserService;
+import com.ubb.usermanagementservice.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/account")
 @RequiredArgsConstructor
-public class RegisterLearnerUserController {
-    private final LearnerUserService learnerUserService;
+public class SignUpLearnerUserController {
+    private final UserManagementService userManagementService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerLearnerUser(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> signUpLearnerUser(@RequestBody SignUpRequest signUpRequest) {
         try {
-            UserRegisteredResponse userRegisteredResponse = learnerUserService.registerLearnerUser(registerRequest);
+            UserRegisteredResponse userRegisteredResponse = userManagementService.signUpLearnerUser(signUpRequest);
             return ResponseEntity.ok(userRegisteredResponse);
         } catch (LearnerUserEmailTakenException | LearnerUserUsernameTakenException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
