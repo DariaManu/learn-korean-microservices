@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.StreamSupport;
@@ -36,6 +37,7 @@ public class LearningProgressService {
 
     public List<String> getLearningModuleNames() {
         return StreamSupport.stream(learningModuleRepository.findAll().spliterator(), false)
+                .sorted(Comparator.comparing(LearningModule::getLearningModuleId))
                 .map(LearningModule::getName).toList();
     }
 
