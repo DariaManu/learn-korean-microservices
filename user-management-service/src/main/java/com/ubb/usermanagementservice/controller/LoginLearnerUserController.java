@@ -22,10 +22,8 @@ public class LoginLearnerUserController {
         try {
             final UserRegisteredResponse userRegisteredResponse = userManagementService.loginLearnerUser(loginRequest);
             return ResponseEntity.ok(userRegisteredResponse);
-        } catch (LearnerUserNotFoundException exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (LearnerUserIncorrectPasswordException exception) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (LearnerUserNotFoundException | LearnerUserIncorrectPasswordException exception) {
+            return ResponseEntity.badRequest().body(exception);
         }
     }
 }

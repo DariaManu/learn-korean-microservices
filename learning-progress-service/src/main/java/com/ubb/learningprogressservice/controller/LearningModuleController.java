@@ -7,19 +7,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
-@RequestMapping("/module")
+@RequestMapping("/modules")
 @RequiredArgsConstructor
-public class CheckAccessToLearningModuleController {
+public class LearningModuleController {
     private final LearningProgressService learningProgressService;
 
     @PostMapping()
     public ResponseEntity<?> checkAccessToLearningModule(@RequestBody final CheckLearningModuleAccessRequest request) {
-        if (learningProgressService.checkAccessToLearningModule(request.getLearningModuleName(), request.getUserProgressLevel())) {
+        if (learningProgressService.checkAccessToLearningModule(request.getLearningModuleName(), request.getLearnerUserId())) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping()
+    public List<String> getLearningModuleNames() {
+        return learningProgressService.getLearningModuleNames();
     }
 }

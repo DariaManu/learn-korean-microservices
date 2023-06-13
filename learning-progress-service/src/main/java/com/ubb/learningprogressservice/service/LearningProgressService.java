@@ -39,8 +39,9 @@ public class LearningProgressService {
                 .map(LearningModule::getName).toList();
     }
 
-    public boolean checkAccessToLearningModule(final String learningModuleName, final ProgressLevel userProgressLevel) {
+    public boolean checkAccessToLearningModule(final String learningModuleName, final Long learnerUserId) {
         final LearningModule learningModule = learningModuleRepository.findByName(learningModuleName);
+        final ProgressLevel userProgressLevel = userProgressRepository.findByUserId(learnerUserId).getLevel();
         return userProgressLevel.isHigherThan(learningModule.getRequiredProgressLevel());
     }
 
@@ -92,8 +93,9 @@ public class LearningProgressService {
         if (userProgress.getLevel().isEqual(learningModule.getRequiredProgressLevel())) {
             //BUG HERE -> one more filter condition should be added -> the quiz attempts should belong to the current user
             final List<String> learningModuleNamesForPassedQuizAttempts = StreamSupport.stream(quizAttemptRepository.findAll().spliterator(), false)
-                    .filter(quizAttempt -> quizAttempt.getLearningModule().getRequiredProgressLevel().isEqual(userProgress.getLevel()))
+                    .filter(quizAttempt -> quizAttempt.getUserId().equals(userId))
                     .filter(QuizAttempt::isQuizPassed)
+                    .filter(quizAttempt -> quizAttempt.getLearningModule().getRequiredProgressLevel().isEqual(userProgress.getLevel()))
                     .map(quizAttempt -> quizAttempt.getLearningModule().getName()).toList();
 
             final List<String> learningModulesForCurrentProgressLevel = learningModuleRepository.findAllByRequiredProgressLevel(userProgress.getLevel())

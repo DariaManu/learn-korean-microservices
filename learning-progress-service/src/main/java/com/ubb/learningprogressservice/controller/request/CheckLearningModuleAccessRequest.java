@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CheckLearningModuleAccessRequest {
     private String learningModuleName;
-    private ProgressLevel userProgressLevel;
+    private Long learnerUserId;
 }

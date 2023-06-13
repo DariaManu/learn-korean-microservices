@@ -20,7 +20,7 @@ public class UserProgressController {
     }
 
     @GetMapping("/{learnerUserId}")
-    public LearnerUserProgressLevelResponse getUserProgressLevel(@PathVariable final Long learnerUserId) {
+    public LearnerUserProgressLevelResponse getLearnerUserProgressLevel(@PathVariable final Long learnerUserId) {
         final String learnerUserProgressLevel = learningProgressService.getUserProgressLevel(learnerUserId);
         return new LearnerUserProgressLevelResponse(learnerUserProgressLevel);
     }

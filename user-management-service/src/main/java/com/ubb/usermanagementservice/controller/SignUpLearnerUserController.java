@@ -23,8 +23,7 @@ public class SignUpLearnerUserController {
             UserRegisteredResponse userRegisteredResponse = userManagementService.signUpLearnerUser(signUpRequest);
             return ResponseEntity.ok(userRegisteredResponse);
         } catch (LearnerUserEmailTakenException | LearnerUserUsernameTakenException exception) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //return ResponseEntity.badRequest().body(entity);
+            return ResponseEntity.badRequest().body(exception);
         }
     }
 }
