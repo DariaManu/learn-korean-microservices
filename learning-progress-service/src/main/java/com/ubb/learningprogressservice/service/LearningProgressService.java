@@ -93,7 +93,6 @@ public class LearningProgressService {
         final UserProgress userProgress = userProgressRepository.findByUserId(userId);
         final LearningModule learningModule = learningModuleRepository.findByName(learningModuleName);
         if (userProgress.getLevel().isEqual(learningModule.getRequiredProgressLevel())) {
-            //BUG HERE -> one more filter condition should be added -> the quiz attempts should belong to the current user
             final List<String> learningModuleNamesForPassedQuizAttempts = StreamSupport.stream(quizAttemptRepository.findAll().spliterator(), false)
                     .filter(quizAttempt -> quizAttempt.getUserId().equals(userId))
                     .filter(QuizAttempt::isQuizPassed)
