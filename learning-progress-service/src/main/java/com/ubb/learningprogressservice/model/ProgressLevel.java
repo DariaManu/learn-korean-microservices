@@ -10,8 +10,12 @@ public enum ProgressLevel {
         this.order = order;
     }
 
-    public boolean isHigherThan(ProgressLevel other) {
+    public boolean isHigherThanOrEqualTo(ProgressLevel other) {
         return this.order >= other.order;
+    }
+
+    public boolean isHigherThan(ProgressLevel other) {
+        return this.order > other.order;
     }
 
     public boolean isEqual(ProgressLevel other) {

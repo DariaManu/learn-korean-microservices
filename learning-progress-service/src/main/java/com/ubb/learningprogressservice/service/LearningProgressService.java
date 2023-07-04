@@ -44,7 +44,7 @@ public class LearningProgressService {
     public boolean checkAccessToLearningModule(final String learningModuleName, final Long learnerUserId) {
         final LearningModule learningModule = learningModuleRepository.findByName(learningModuleName);
         final ProgressLevel userProgressLevel = userProgressRepository.findByUserId(learnerUserId).getLevel();
-        return userProgressLevel.isHigherThan(learningModule.getRequiredProgressLevel());
+        return userProgressLevel.isHigherThanOrEqualTo(learningModule.getRequiredProgressLevel());
     }
 
     public List<Question> getRandomQuestionsForLearningModule(final String learningModuleName) {
